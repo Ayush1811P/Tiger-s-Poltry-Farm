@@ -24,9 +24,9 @@ export const offers = [
     },
     {
         id: "offer-2",
-        title: { en: "Free Home Delivery", hi: "मुफ़्त होम डिलीवरी" },
-        body: { en: "Free delivery on all orders above ₹500 within the city.", hi: "शहर के अंदर ₹500 से ज़्यादा के सभी ऑर्डर पर मुफ़्त डिलीवरी।" },
-        badge: { en: "FREE", hi: "मुफ़्त" },
+        title: { en: "Single Bird Discount", hi: "सिंगल बर्ड छूट" },
+        body: { en: "Enjoy an exclusive 8% discount on every individual whole chicken purchase.", hi: "प्रत्येक साबुत चिकन की खरीदारी पर 8% की विशेष छूट का आनंद लें।" },
+        badge: { en: "8% OFF", hi: "8% छूट" },
     },
 ];
 

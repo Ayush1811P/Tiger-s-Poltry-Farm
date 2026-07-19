@@ -9,10 +9,8 @@ const KEY = "tpf_cart_v1";
 
 function load() {
     try {
-        const raw = localStorage.getItem(KEY);
-        if (!raw) return [];
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
+        localStorage.removeItem(KEY);
+        return [];
     } catch {
         return [];
     }

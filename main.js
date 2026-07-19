@@ -705,14 +705,7 @@ function contactHtml() {
               <div class="font-bold text-base" data-i18n="contactAddressValue"></div>
             </div>
           </div>
-          <div class="reveal rounded-2xl p-5 bg-[var(--color-bg)] border border-[var(--color-divider)] sm:col-span-2">
-            <div class="font-bold mb-2" data-i18n="contactSocial"></div>
-            <div class="flex items-center gap-3 text-[var(--color-muted)] text-sm">
-              <span class="w-10 h-10 rounded-xl bg-white border border-[var(--color-divider)] flex items-center justify-center opacity-50">f</span>
-              <span class="w-10 h-10 rounded-xl bg-white border border-[var(--color-divider)] flex items-center justify-center opacity-50">◎</span>
-              <span data-i18n="contactSocialSoon"></span>
-            </div>
-          </div>
+
         </div>
         <div class="mt-6 flex justify-center">
           <a href="tel:${business.phone}" class="btn-primary inline-flex items-center gap-2">
@@ -759,7 +752,8 @@ function footerHtml() {
       </div>
       <div class="border-t border-white/10">
         <div class="max-w-5xl mx-auto px-5 py-4 text-center text-xs text-white/60">
-          © ${year} <span data-i18n="brand"></span>. <span data-i18n="footerRights"></span>
+          © ${year} <span data-i18n="brand"></span>. <span data-i18n="footerRights"></span><br>
+          Developer: Ayush Singh
         </div>
       </div>
     </footer>

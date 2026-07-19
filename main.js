@@ -409,11 +409,11 @@ function heroHtml() {
       <div class="relative h-[70vh] min-h-[480px] max-h-[640px] overflow-hidden">
         <div class="absolute inset-0 w-full h-full overflow-hidden z-0">
           <div class="hero-slides flex w-full h-full transition-transform duration-300 ease-in-out">
-            <img src="/Tiger%20Lairo%20Farm1.jpg" alt="Tiger Lairo Farm 1" class="w-full h-full object-cover shrink-0" loading="eager" decoding="async" />
-            <img src="/Tiger%20Lairo%20Farm2.jpg" alt="Tiger Lairo Farm 2" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
-            <img src="/Tiger%20Lairo%20Farm3.jpg" alt="Tiger Lairo Farm 3" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
-            <img src="/Tiger%20Lairo%20Farm4.jpg" alt="Tiger Lairo Farm 4" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
-            <img src="/Tiger%20Lairo%20Farm5.jpg" alt="Tiger Lairo Farm 5" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm1.webp" alt="Tiger Lairo Farm 1" class="w-full h-full object-cover shrink-0" loading="eager" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm2.webp" alt="Tiger Lairo Farm 2" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm3.webp" alt="Tiger Lairo Farm 3" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm4.webp" alt="Tiger Lairo Farm 4" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm5.webp" alt="Tiger Lairo Farm 5" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/55"></div>

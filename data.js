@@ -10,7 +10,7 @@ export const products = [
         pricePerKg: 220,
         unit: "weight",
         stock: true,
-        image: "/chicken_pic.jpg",
+        image: "/chicken_pic.webp",
         desc: { en: "Select your preferred weight per chicken (1.0 kg - 2.0 kg) and quantity to customize your order.", hi: "अपना ऑर्डर कस्टमाइज़ करने के लिए प्रति चिकन मनपसंद वज़न (1.0 किलो - 2.0 किलो) और मात्रा चुनें।" },
     },
 ];
@@ -31,11 +31,11 @@ export const offers = [
 ];
 
 export const galleryImages = [
-    "/galary_1.jpg",
-    "/galary_2.jpg",
-    "/chicken_pic.jpg",
-    "/about_image.jpg",
-    "/about_2.jpg",
+    "/galary_1.webp",
+    "/galary_2.webp",
+    "/chicken_pic.webp",
+    "/about_image.webp",
+    "/about_2.webp",
 ];
 
 // Business contact details.

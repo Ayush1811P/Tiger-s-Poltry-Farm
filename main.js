@@ -314,7 +314,7 @@ function heroHtml() {
     return `
     <section id="home" class="relative">
       <div class="relative h-[70vh] min-h-[480px] max-h-[640px] overflow-hidden">
-        <img src="/images/galary_1.jpg"
+        <img src="/galary_1.jpg"
              alt="Poultry farm" class="absolute inset-0 w-full h-full object-cover" loading="eager" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/55"></div>
         <div class="relative h-full max-w-5xl mx-auto px-5 flex flex-col justify-center text-white">

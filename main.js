@@ -485,8 +485,8 @@ function aboutHtml() {
           </div>
         </div>
         <div class="reveal grid grid-cols-2 gap-3">
-          <img src="/about_image.jpg" loading="lazy" decoding="async" class="rounded-2xl h-56 w-full object-cover" alt="Workers at Tiger Lairo Layer Farm Mau" />
-          <img src="/about_2.jpg" loading="lazy" decoding="async" class="rounded-2xl h-56 w-full object-cover mt-6" alt="Healthy layer poultry breeds at Tiger Lairo Farm" />
+          <img src="/about_image.webp" loading="lazy" decoding="async" class="rounded-2xl h-56 w-full object-cover" alt="Workers at Tiger Lairo Layer Farm Mau" />
+          <img src="/about_2.webp" loading="lazy" decoding="async" class="rounded-2xl h-56 w-full object-cover mt-6" alt="Healthy layer poultry breeds at Tiger Lairo Farm" />
         </div>
       </div>
     </section>

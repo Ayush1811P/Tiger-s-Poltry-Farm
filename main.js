@@ -367,8 +367,8 @@ function aboutHtml() {
           </div>
         </div>
         <div class="reveal grid grid-cols-2 gap-3">
-          <img src="/images/about_image.jpg" loading="lazy" class="rounded-2xl h-56 w-full object-cover" alt="Farm workers" />
-          <img src="/images/about_2.jpg" loading="lazy" class="rounded-2xl h-56 w-full object-cover mt-6" alt="Poultry breeds" />
+          <img src="/about_image.jpg" loading="lazy" class="rounded-2xl h-56 w-full object-cover" alt="Farm workers" />
+          <img src="/about_2.jpg" loading="lazy" class="rounded-2xl h-56 w-full object-cover mt-6" alt="Poultry breeds" />
         </div>
       </div>
     </section>
@@ -999,10 +999,10 @@ function checkoutModalHtml() {
 
           <div id="qrCodeContainer" class="mb-5 p-4 rounded-xl border border-[var(--color-divider)] bg-[var(--color-bg)] flex flex-col items-center justify-center text-center ${paymentMethod === "online" ? "" : "hidden"}">
             <div class="w-48 h-48 bg-white border border-[var(--color-divider)] p-2 rounded-xl flex items-center justify-center shadow-sm overflow-hidden mb-3">
-              <img src="/images/QR.jpeg" alt="QR Code" class="w-full h-full object-cover object-center" />
+              <img src="/QR.jpeg" alt="QR Code" class="w-full h-full object-cover object-center" />
             </div>
             
-            <a href="/images/QR.jpeg" download="TigerFarm_QRCode.jpeg" class="btn-ghost text-sm mb-4 inline-flex items-center gap-2">
+            <a href="/QR.jpeg" download="TigerFarm_QRCode.jpeg" class="btn-ghost text-sm mb-4 inline-flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span data-i18n="downloadQR"></span>
             </a>

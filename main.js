@@ -6,19 +6,19 @@ import "./style.css";
 import { t } from "./i18n.js";
 import { products, offers, galleryImages, business } from "./data.js";
 import {
-    getState,
-    addItem,
-    setQty,
-    removeItem,
-    clearCart,
-    subtotal,
-    deliveryFee,
-    total,
-    itemCount,
-    subscribe,
-    addCustomItem,
-    setCustomQty,
-    removeCustomItem,
+  getState,
+  addItem,
+  setQty,
+  removeItem,
+  clearCart,
+  subtotal,
+  deliveryFee,
+  total,
+  itemCount,
+  subscribe,
+  addCustomItem,
+  setCustomQty,
+  removeCustomItem,
 } from "./cart.js";
 
 // ---------------------------------------------------------------------------
@@ -38,15 +38,15 @@ const root = document.getElementById("app");
 // ---------------------------------------------------------------------------
 
 function boot() {
-    // Language gate on first visit
-    if (!lang) {
-        renderLanguageGate();
-        return;
-    }
-    applyHtmlLang();
-    renderApp();
-    startHeroRotator();
-    observeReveal();
+  // Language gate on first visit
+  if (!lang) {
+    renderLanguageGate();
+    return;
+  }
+  applyHtmlLang();
+  renderApp();
+  startHeroRotator();
+  observeReveal();
 }
 
 // ---------------------------------------------------------------------------
@@ -54,7 +54,7 @@ function boot() {
 // ---------------------------------------------------------------------------
 
 function renderLanguageGate() {
-    root.innerHTML = `
+  root.innerHTML = `
     <div class="lang-overlay" id="langOverlay">
       <div class="lang-card">
         <div class="flex items-center justify-center mb-5">
@@ -77,26 +77,26 @@ function renderLanguageGate() {
       ${heroHtml()}
     </div>
   `;
-    applyI18n(root);
+  applyI18n(root);
 
-    root.querySelectorAll("[data-lang]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            lang = btn.dataset.lang;
-            localStorage.setItem("tpf_lang", lang);
-            const overlay = document.getElementById("langOverlay");
-            overlay.classList.add("is-hidden");
-            setTimeout(() => {
-                applyHtmlLang();
-                renderApp();
-                startHeroRotator();
-                observeReveal();
-            }, 480);
-        });
+  root.querySelectorAll("[data-lang]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      lang = btn.dataset.lang;
+      localStorage.setItem("tpf_lang", lang);
+      const overlay = document.getElementById("langOverlay");
+      overlay.classList.add("is-hidden");
+      setTimeout(() => {
+        applyHtmlLang();
+        renderApp();
+        startHeroRotator();
+        observeReveal();
+      }, 480);
     });
+  });
 }
 
 function applyHtmlLang() {
-    document.documentElement.lang = lang || "en";
+  document.documentElement.lang = lang || "en";
 }
 
 // ---------------------------------------------------------------------------
@@ -104,18 +104,18 @@ function applyHtmlLang() {
 // ---------------------------------------------------------------------------
 
 function renderApp() {
-    root.innerHTML = shell();
-    applyI18n(root);
-    wireShell();
-    renderProducts();
-    renderOffers();
-    renderGallery();
-    renderCart();
-    observeReveal();
+  root.innerHTML = shell();
+  applyI18n(root);
+  wireShell();
+  renderProducts();
+  renderOffers();
+  renderGallery();
+  renderCart();
+  observeReveal();
 }
 
 function shell() {
-    return `
+  return `
     ${navHtml()}
     <main>
       ${heroHtml()}
@@ -136,178 +136,178 @@ function shell() {
 }
 
 function wireShell() {
-    // Language switcher
-    root.querySelectorAll("[data-set-lang]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            lang = btn.dataset.setLang;
-            localStorage.setItem("tpf_lang", lang);
-            applyHtmlLang();
-            renderApp();
-            startHeroRotator();
-            observeReveal();
-        });
+  // Language switcher
+  root.querySelectorAll("[data-set-lang]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      lang = btn.dataset.setLang;
+      localStorage.setItem("tpf_lang", lang);
+      applyHtmlLang();
+      renderApp();
+      startHeroRotator();
+      observeReveal();
     });
+  });
 
-    // Smooth scroll nav links
-    root.querySelectorAll("[data-scroll]").forEach((a) => {
-        a.addEventListener("click", (e) => {
-            const id = a.getAttribute("href").slice(1);
-            const el = document.getElementById(id);
-            if (el) {
-                e.preventDefault();
-                closeMobileNav();
-                el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
-    });
-
-    // Cart open
-    document.getElementById("cartBtn")?.addEventListener("click", openCart);
-    document.getElementById("cartBtnMobile")?.addEventListener("click", openCart);
-    document.getElementById("floatingCartBtn")?.addEventListener("click", openCart);
-
-    // Cart close
-    document.getElementById("cartClose")?.addEventListener("click", closeCart);
-    document.getElementById("cartBackdrop")?.addEventListener("click", closeCart);
-
-    // Mobile nav
-    document.getElementById("menuBtn")?.addEventListener("click", toggleMobileNav);
-    document.getElementById("mobileNavClose")?.addEventListener("click", closeMobileNav);
-
-    // Checkout
-    document.getElementById("cartCheckout")?.addEventListener("click", openCheckout);
-    document.getElementById("cartClear")?.addEventListener("click", () => {
-        if (confirm(t("cartClear", lang) + "?")) clearCart();
-    });
-
-    document.getElementById("checkoutClose")?.addEventListener("click", closeCheckout);
-    document.getElementById("checkoutBackdrop")?.addEventListener("click", closeCheckout);
-    document.getElementById("checkoutBack")?.addEventListener("click", () => {
-        closeCheckout();
-        openCart();
-    });
-
-    document.querySelectorAll("input[name='deliveryMethod']").forEach((r) => {
-        r.addEventListener("change", () => {
-            deliveryMethod = r.value;
-            renderCheckout_summary_only();
-        });
-    });
-
-    document.getElementById("checkoutForm")?.addEventListener("submit", (e) => {
+  // Smooth scroll nav links
+  root.querySelectorAll("[data-scroll]").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href").slice(1);
+      const el = document.getElementById(id);
+      if (el) {
         e.preventDefault();
-        submitOrder();
+        closeMobileNav();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     });
+  });
 
-    document.getElementById("sendClose")?.addEventListener("click", closeSend);
+  // Cart open
+  document.getElementById("cartBtn")?.addEventListener("click", openCart);
+  document.getElementById("cartBtnMobile")?.addEventListener("click", openCart);
+  document.getElementById("floatingCartBtn")?.addEventListener("click", openCart);
 
-    // Hero CTAs
-    document.getElementById("heroOrder")?.addEventListener("click", () => {
-        document.getElementById("products").scrollIntoView({ behavior: "smooth" });
+  // Cart close
+  document.getElementById("cartClose")?.addEventListener("click", closeCart);
+  document.getElementById("cartBackdrop")?.addEventListener("click", closeCart);
+
+  // Mobile nav
+  document.getElementById("menuBtn")?.addEventListener("click", toggleMobileNav);
+  document.getElementById("mobileNavClose")?.addEventListener("click", closeMobileNav);
+
+  // Checkout
+  document.getElementById("cartCheckout")?.addEventListener("click", openCheckout);
+  document.getElementById("cartClear")?.addEventListener("click", () => {
+    if (confirm(t("cartClear", lang) + "?")) clearCart();
+  });
+
+  document.getElementById("checkoutClose")?.addEventListener("click", closeCheckout);
+  document.getElementById("checkoutBackdrop")?.addEventListener("click", closeCheckout);
+  document.getElementById("checkoutBack")?.addEventListener("click", () => {
+    closeCheckout();
+    openCart();
+  });
+
+  document.querySelectorAll("input[name='deliveryMethod']").forEach((r) => {
+    r.addEventListener("change", () => {
+      deliveryMethod = r.value;
+      renderCheckout_summary_only();
     });
-    document.getElementById("heroProducts")?.addEventListener("click", () => {
-        document.getElementById("products").scrollIntoView({ behavior: "smooth" });
-    });
+  });
 
-    // Re-render cart badge on cart changes
-    subscribe(() => {
-        renderCartBadge();
-        renderCart();
-        if (checkoutOpen) renderCheckout_summary_only();
-    });
+  document.getElementById("checkoutForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    submitOrder();
+  });
 
-    wireFooterMap();
+  document.getElementById("sendClose")?.addEventListener("click", closeSend);
+
+  // Hero CTAs
+  document.getElementById("heroOrder")?.addEventListener("click", () => {
+    document.getElementById("products").scrollIntoView({ behavior: "smooth" });
+  });
+  document.getElementById("heroProducts")?.addEventListener("click", () => {
+    document.getElementById("products").scrollIntoView({ behavior: "smooth" });
+  });
+
+  // Re-render cart badge on cart changes
+  subscribe(() => {
+    renderCartBadge();
+    renderCart();
+    if (checkoutOpen) renderCheckout_summary_only();
+  });
+
+  wireFooterMap();
 }
 
 function wireFooterMap() {
-    const showMapBtn = document.getElementById("showMapBtn");
-    const closeMapBtn = document.getElementById("closeMapBtn");
-    const mapContainer = document.getElementById("footerMapContainer");
-    const mapHeader = document.getElementById("footerMapHeader");
+  const showMapBtn = document.getElementById("showMapBtn");
+  const closeMapBtn = document.getElementById("closeMapBtn");
+  const mapContainer = document.getElementById("footerMapContainer");
+  const mapHeader = document.getElementById("footerMapHeader");
 
-    if (!showMapBtn || !mapContainer) return;
+  if (!showMapBtn || !mapContainer) return;
 
-    showMapBtn.addEventListener("click", () => {
-        mapContainer.classList.remove("hidden");
-        showMapBtn.classList.add("hidden");
-    });
+  showMapBtn.addEventListener("click", () => {
+    mapContainer.classList.remove("hidden");
+    showMapBtn.classList.add("hidden");
+  });
 
-    closeMapBtn.addEventListener("click", () => {
-        mapContainer.classList.add("hidden");
-        showMapBtn.classList.remove("hidden");
-    });
+  closeMapBtn.addEventListener("click", () => {
+    mapContainer.classList.add("hidden");
+    showMapBtn.classList.remove("hidden");
+  });
 
-    // Make map draggable
-    let isDragging = false;
-    let currentX;
-    let currentY;
-    let initialX;
-    let initialY;
-    let xOffset = 0;
-    let yOffset = 0;
+  // Make map draggable
+  let isDragging = false;
+  let currentX;
+  let currentY;
+  let initialX;
+  let initialY;
+  let xOffset = 0;
+  let yOffset = 0;
 
-    if (mapHeader) {
-        mapHeader.addEventListener("mousedown", dragStart);
-        document.addEventListener("mouseup", dragEnd);
-        document.addEventListener("mousemove", drag);
+  if (mapHeader) {
+    mapHeader.addEventListener("mousedown", dragStart);
+    document.addEventListener("mouseup", dragEnd);
+    document.addEventListener("mousemove", drag);
 
-        mapHeader.addEventListener("touchstart", dragStart, { passive: true });
-        document.addEventListener("touchend", dragEnd);
-        document.addEventListener("touchmove", drag, { passive: true });
+    mapHeader.addEventListener("touchstart", dragStart, { passive: true });
+    document.addEventListener("touchend", dragEnd);
+    document.addEventListener("touchmove", drag, { passive: true });
+  }
+
+  function dragStart(e) {
+    if (e.type === "touchstart") {
+      initialX = e.touches[0].clientX - xOffset;
+      initialY = e.touches[0].clientY - yOffset;
+    } else {
+      initialX = e.clientX - xOffset;
+      initialY = e.clientY - yOffset;
     }
-
-    function dragStart(e) {
-        if (e.type === "touchstart") {
-            initialX = e.touches[0].clientX - xOffset;
-            initialY = e.touches[0].clientY - yOffset;
-        } else {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
-        }
-        if (e.target === mapHeader || e.target.parentNode === mapHeader) {
-            isDragging = true;
-        }
+    if (e.target === mapHeader || e.target.parentNode === mapHeader) {
+      isDragging = true;
     }
+  }
 
-    function dragEnd(e) {
-        initialX = currentX;
-        initialY = currentY;
-        isDragging = false;
-    }
+  function dragEnd(e) {
+    initialX = currentX;
+    initialY = currentY;
+    isDragging = false;
+  }
 
-    function drag(e) {
-        if (isDragging) {
-            if (e.type === "touchmove") {
-                currentX = e.touches[0].clientX - initialX;
-                currentY = e.touches[0].clientY - initialY;
-            } else {
-                e.preventDefault();
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-            }
-            xOffset = currentX;
-            yOffset = currentY;
-            setTranslate(currentX, currentY, mapContainer);
-        }
+  function drag(e) {
+    if (isDragging) {
+      if (e.type === "touchmove") {
+        currentX = e.touches[0].clientX - initialX;
+        currentY = e.touches[0].clientY - initialY;
+      } else {
+        e.preventDefault();
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+      }
+      xOffset = currentX;
+      yOffset = currentY;
+      setTranslate(currentX, currentY, mapContainer);
     }
+  }
 
-    function setTranslate(xPos, yPos, el) {
-        const footer = document.getElementById("mainFooter");
-        if (footer) {
-            const minX = -(footer.offsetWidth - el.offsetWidth - 20);
-            const maxX = 20;
-            const minY = -(footer.offsetHeight - el.offsetHeight - 64);
-            const maxY = 64;
-            xPos = Math.max(minX, Math.min(xPos, maxX));
-            yPos = Math.max(minY, Math.min(yPos, maxY));
-            
-            xOffset = xPos;
-            yOffset = yPos;
-            currentX = xPos;
-            currentY = yPos;
-        }
-        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+  function setTranslate(xPos, yPos, el) {
+    const footer = document.getElementById("mainFooter");
+    if (footer) {
+      const minX = -(footer.offsetWidth - el.offsetWidth - 20);
+      const maxX = 20;
+      const minY = -(footer.offsetHeight - el.offsetHeight - 64);
+      const maxY = 64;
+      xPos = Math.max(minX, Math.min(xPos, maxX));
+      yPos = Math.max(minY, Math.min(yPos, maxY));
+
+      xOffset = xPos;
+      yOffset = yPos;
+      currentX = xPos;
+      currentY = yPos;
     }
+    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -315,7 +315,7 @@ function wireFooterMap() {
 // ---------------------------------------------------------------------------
 
 function navHtml() {
-    return `
+  return `
     <header class="sticky top-0 z-40 bg-[var(--color-card)]/90 backdrop-blur border-b border-[var(--color-divider)] pt-safe">
       <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
         <a href="#home" data-scroll class="flex items-center gap-2">
@@ -338,11 +338,11 @@ function navHtml() {
 }
 
 function navLink(key, href) {
-    return `<a href="${href}" data-scroll class="px-3 py-2 rounded-lg text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-bg)] transition" data-i18n="${key}"></a>`;
+  return `<a href="${href}" data-scroll class="px-3 py-2 rounded-lg text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-bg)] transition" data-i18n="${key}"></a>`;
 }
 
 function langSwitcherHtml() {
-    return `
+  return `
     <div class="relative" id="langSwitcher">
       <button id="langSwitcherBtn" class="h-11 px-3 rounded-xl border border-[var(--color-divider)] flex items-center gap-1 text-sm font-semibold text-[var(--color-ink)]">
         <span>🇮🇳</span>
@@ -357,7 +357,7 @@ function langSwitcherHtml() {
 }
 
 function mobileNavHtml() {
-    return `
+  return `
     <div id="mobileNavBackdrop" class="hidden fixed inset-0 z-50 bg-black/40" onclick="document.getElementById('mobileNav').classList.add('hidden')"></div>
     <div id="mobileNav" class="hidden fixed top-0 right-0 z-50 h-full w-72 bg-white shadow-2xl flex flex-col">
       <div class="flex items-center justify-between p-4 border-b border-[var(--color-divider)]">
@@ -378,22 +378,22 @@ function mobileNavHtml() {
 }
 
 function mobileNavLink(key, href) {
-    return `<a href="${href}" data-scroll class="px-3 py-3 rounded-lg text-base font-medium text-[var(--color-ink)] hover:bg-[var(--color-bg)]" data-i18n="${key}"></a>`;
+  return `<a href="${href}" data-scroll class="px-3 py-3 rounded-lg text-base font-medium text-[var(--color-ink)] hover:bg-[var(--color-bg)]" data-i18n="${key}"></a>`;
 }
 
 function toggleMobileNav() {
-    const nav = document.getElementById("mobileNav");
-    const back = document.getElementById("mobileNavBackdrop");
-    const hidden = nav.classList.contains("hidden");
-    nav.classList.toggle("hidden");
-    back.classList.toggle("hidden");
-    if (hidden) {
-        nav.style.transform = "translateX(0)";
-    }
+  const nav = document.getElementById("mobileNav");
+  const back = document.getElementById("mobileNavBackdrop");
+  const hidden = nav.classList.contains("hidden");
+  nav.classList.toggle("hidden");
+  back.classList.toggle("hidden");
+  if (hidden) {
+    nav.style.transform = "translateX(0)";
+  }
 }
 function closeMobileNav() {
-    document.getElementById("mobileNav")?.classList.add("hidden");
-    document.getElementById("mobileNavBackdrop")?.classList.add("hidden");
+  document.getElementById("mobileNav")?.classList.add("hidden");
+  document.getElementById("mobileNavBackdrop")?.classList.add("hidden");
 }
 
 // ---------------------------------------------------------------------------
@@ -401,14 +401,21 @@ function closeMobileNav() {
 // ---------------------------------------------------------------------------
 
 function heroHtml() {
-    const rotator = (t("heroRotator", lang) || []).map(
-        (s, i) => `<span class="${i === 0 ? "is-active" : ""}">${s}</span>`
-    ).join("");
-    return `
+  const rotator = (t("heroRotator", lang) || []).map(
+    (s, i) => `<span class="${i === 0 ? "is-active" : ""}">${s}</span>`
+  ).join("");
+  return `
     <section id="home" class="relative">
       <div class="relative h-[70vh] min-h-[480px] max-h-[640px] overflow-hidden">
-        <img src="/landing%20page.jpg"
-             alt="Tiger Lairo Layer Poultry Farm in Mau" class="absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async" />
+        <div class="absolute inset-0 w-full h-full overflow-hidden z-0">
+          <div class="hero-slides flex w-full h-full transition-transform duration-300 ease-in-out">
+            <img src="/Tiger%20Lairo%20Farm1.jpg" alt="Tiger Lairo Farm 1" class="w-full h-full object-cover shrink-0" loading="eager" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm2.jpg" alt="Tiger Lairo Farm 2" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm3.jpg" alt="Tiger Lairo Farm 3" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm4.jpg" alt="Tiger Lairo Farm 4" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+            <img src="/Tiger%20Lairo%20Farm5.jpg" alt="Tiger Lairo Farm 5" class="w-full h-full object-cover shrink-0" loading="lazy" decoding="async" />
+          </div>
+        </div>
         <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/55"></div>
         <div class="relative h-full max-w-5xl mx-auto px-5 flex flex-col justify-center text-white">
           <span class="inline-flex w-fit items-center gap-2 bg-white/15 backdrop-blur px-3 py-1.5 rounded-full text-sm font-semibold mb-4">
@@ -429,18 +436,35 @@ function heroHtml() {
 }
 
 let rotatorTimer = null;
+let sliderTimer = null;
 function startHeroRotator() {
-    if (rotatorTimer) clearInterval(rotatorTimer);
-    const rotator = root.querySelector(".hero-rotator");
-    if (!rotator) return;
-    const spans = Array.from(rotator.querySelectorAll("span"));
-    if (spans.length < 2) return;
-    let idx = 0;
-    rotatorTimer = setInterval(() => {
-        spans[idx].classList.remove("is-active");
-        idx = (idx + 1) % spans.length;
-        spans[idx].classList.add("is-active");
-    }, 3200);
+  if (rotatorTimer) clearInterval(rotatorTimer);
+  if (sliderTimer) clearInterval(sliderTimer);
+  const rotator = root.querySelector(".hero-rotator");
+  const slidesContainer = root.querySelector(".hero-slides");
+
+  let idx = 0;
+  let slideIdx = 0;
+  let spans = [];
+  if (rotator) spans = Array.from(rotator.querySelectorAll("span"));
+  const totalSlides = 5;
+
+  rotatorTimer = setInterval(() => {
+    // Text rotate
+    if (spans.length >= 2) {
+      spans[idx].classList.remove("is-active");
+      idx = (idx + 1) % spans.length;
+      spans[idx].classList.add("is-active");
+    }
+  }, 3200);
+
+  // Image slide fast
+  sliderTimer = setInterval(() => {
+    if (slidesContainer) {
+      slideIdx = (slideIdx + 1) % totalSlides;
+      slidesContainer.style.transform = `translate3d(-${slideIdx * 100}%, 0, 0)`;
+    }
+  }, 800); // Fast interval
 }
 
 // ---------------------------------------------------------------------------
@@ -448,7 +472,7 @@ function startHeroRotator() {
 // ---------------------------------------------------------------------------
 
 function aboutHtml() {
-    return `
+  return `
     <section id="about" class="max-w-5xl mx-auto px-5 py-14">
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <div class="reveal">
@@ -470,7 +494,7 @@ function aboutHtml() {
 }
 
 function statCard(value, key) {
-    return `
+  return `
     <div class="bg-white rounded-2xl p-4 text-center border border-[var(--color-divider)]">
       <div class="text-2xl font-extrabold text-[var(--color-primary)]">${value}</div>
       <div class="text-xs text-[var(--color-muted)] mt-1" data-i18n="${key}"></div>
@@ -483,13 +507,13 @@ function statCard(value, key) {
 // ---------------------------------------------------------------------------
 
 function whyHtml() {
-    const items = [
-        ["whyFreshTitle", "whyFreshBody", "🌿"],
-        ["whyHealthyTitle", "whyHealthyBody", "💧"],
-        ["whyFairTitle", "whyFairBody", "₹"],
-        ["whyEasyTitle", "whyEasyBody", "💬"],
-    ];
-    return `
+  const items = [
+    ["whyFreshTitle", "whyFreshBody", "🌿"],
+    ["whyHealthyTitle", "whyHealthyBody", "💧"],
+    ["whyFairTitle", "whyFairBody", "₹"],
+    ["whyEasyTitle", "whyEasyBody", "💬"],
+  ];
+  return `
     <section id="why" class="bg-white border-y border-[var(--color-divider)]">
       <div class="max-w-5xl mx-auto px-5 py-14">
         <h2 class="text-2xl sm:text-3xl mb-8 text-center reveal" data-i18n="whyTitle"></h2>
@@ -512,7 +536,7 @@ function whyHtml() {
 // ---------------------------------------------------------------------------
 
 function productsHtml() {
-    return `
+  return `
     <section id="products" class="max-w-5xl mx-auto px-5 py-14">
       <div class="mb-8 reveal text-center max-w-2xl mx-auto">
         <h2 class="text-3xl sm:text-4xl font-extrabold mb-3 text-[var(--color-primary)]" data-i18n="productsTitle"></h2>
@@ -526,12 +550,12 @@ function productsHtml() {
 }
 
 function renderProducts() {
-    const panel = document.getElementById("customizerPanel");
-    if (!panel) return;
-    const p = products[0];
-    if (!p) return;
+  const panel = document.getElementById("customizerPanel");
+  if (!panel) return;
+  const p = products[0];
+  if (!p) return;
 
-    panel.innerHTML = `
+  panel.innerHTML = `
       <div class="grid md:grid-cols-12">
         <!-- Left Side: Image -->
         <div class="md:col-span-5 relative min-h-[280px] md:min-h-[460px] bg-slate-100">
@@ -605,105 +629,105 @@ function renderProducts() {
       </div>
     `;
 
-    applyI18n(panel);
-    wireCustomizer(p);
+  applyI18n(panel);
+  wireCustomizer(p);
 }
 
 function wireCustomizer(product) {
-    const slider = document.getElementById("weightSlider");
-    const weightVal = document.getElementById("weightVal");
-    const qtyInput = document.getElementById("qtyInput");
-    const summaryText = document.getElementById("summaryText");
-    const estimatedCost = document.getElementById("estimatedCost");
+  const slider = document.getElementById("weightSlider");
+  const weightVal = document.getElementById("weightVal");
+  const qtyInput = document.getElementById("qtyInput");
+  const summaryText = document.getElementById("summaryText");
+  const estimatedCost = document.getElementById("estimatedCost");
 
-    const weightMinus = document.getElementById("weightMinus");
-    const weightPlus = document.getElementById("weightPlus");
-    const qtyMinus = document.getElementById("qtyMinus");
-    const qtyPlus = document.getElementById("qtyPlus");
+  const weightMinus = document.getElementById("weightMinus");
+  const weightPlus = document.getElementById("weightPlus");
+  const qtyMinus = document.getElementById("qtyMinus");
+  const qtyPlus = document.getElementById("qtyPlus");
 
-    const addToCartBtn = document.getElementById("addToCartBtn");
-    const pricePerKg = product.pricePerKg;
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  const pricePerKg = product.pricePerKg;
 
-    function updateCalculations() {
-        const weight = parseFloat(slider.value) || 1.5;
-        const qty = parseInt(qtyInput.value) || 1;
-        const totalWeight = weight * qty;
-        const cost = totalWeight * pricePerKg;
+  function updateCalculations() {
+    const weight = parseFloat(slider.value) || 1.5;
+    const qty = parseInt(qtyInput.value) || 1;
+    const totalWeight = weight * qty;
+    const cost = totalWeight * pricePerKg;
 
-        weightVal.textContent = weight.toFixed(1);
-        summaryText.textContent = `${qty} ${qty > 1 ? "pcs" : "pc"} × ${weight.toFixed(1)} kg = ${totalWeight.toFixed(1)} kg`;
-        estimatedCost.textContent = cost.toFixed(2);
-    }
+    weightVal.textContent = weight.toFixed(1);
+    summaryText.textContent = `${qty} ${qty > 1 ? "pcs" : "pc"} × ${weight.toFixed(1)} kg = ${totalWeight.toFixed(1)} kg`;
+    estimatedCost.textContent = cost.toFixed(2);
+  }
 
-    weightMinus.addEventListener("click", () => {
-        let v = parseFloat(slider.value) || 1.5;
-        v = Math.max(1.0, v - 0.1);
-        slider.value = v;
-        updateCalculations();
-    });
-    weightPlus.addEventListener("click", () => {
-        let v = parseFloat(slider.value) || 1.5;
-        v = Math.min(3.0, v + 0.1);
-        slider.value = v;
-        updateCalculations();
-    });
-    slider.addEventListener("input", updateCalculations);
-
-    qtyMinus.addEventListener("click", () => {
-        let v = parseInt(qtyInput.value) || 1;
-        v = Math.max(1, v - 1);
-        qtyInput.value = v;
-        updateCalculations();
-    });
-    qtyPlus.addEventListener("click", () => {
-        let v = parseInt(qtyInput.value) || 1;
-        v = v + 1;
-        qtyInput.value = v;
-        updateCalculations();
-    });
-    qtyInput.addEventListener("input", () => {
-        let v = parseInt(qtyInput.value);
-        if (isNaN(v) || v < 1) return;
-        updateCalculations();
-    });
-    qtyInput.addEventListener("change", () => {
-        let v = parseInt(qtyInput.value);
-        if (isNaN(v) || v < 1) {
-            qtyInput.value = 1;
-            updateCalculations();
-        }
-    });
-
-    addToCartBtn.addEventListener("click", () => {
-        const weight = parseFloat(slider.value) || 1.5;
-        const qty = parseInt(qtyInput.value) || 1;
-
-        addCustomItem(product.id, weight, qty);
-
-        const originalText = addToCartBtn.innerHTML;
-        addToCartBtn.innerHTML = `<span>✓</span> <span data-i18n="productAdded"></span>`;
-        addToCartBtn.disabled = true;
-        applyI18n(addToCartBtn);
-
-        setTimeout(() => {
-            addToCartBtn.innerHTML = originalText;
-            addToCartBtn.disabled = false;
-            applyI18n(addToCartBtn);
-        }, 1200);
-    });
-
+  weightMinus.addEventListener("click", () => {
+    let v = parseFloat(slider.value) || 1.5;
+    v = Math.max(1.0, v - 0.1);
+    slider.value = v;
     updateCalculations();
+  });
+  weightPlus.addEventListener("click", () => {
+    let v = parseFloat(slider.value) || 1.5;
+    v = Math.min(3.0, v + 0.1);
+    slider.value = v;
+    updateCalculations();
+  });
+  slider.addEventListener("input", updateCalculations);
+
+  qtyMinus.addEventListener("click", () => {
+    let v = parseInt(qtyInput.value) || 1;
+    v = Math.max(1, v - 1);
+    qtyInput.value = v;
+    updateCalculations();
+  });
+  qtyPlus.addEventListener("click", () => {
+    let v = parseInt(qtyInput.value) || 1;
+    v = v + 1;
+    qtyInput.value = v;
+    updateCalculations();
+  });
+  qtyInput.addEventListener("input", () => {
+    let v = parseInt(qtyInput.value);
+    if (isNaN(v) || v < 1) return;
+    updateCalculations();
+  });
+  qtyInput.addEventListener("change", () => {
+    let v = parseInt(qtyInput.value);
+    if (isNaN(v) || v < 1) {
+      qtyInput.value = 1;
+      updateCalculations();
+    }
+  });
+
+  addToCartBtn.addEventListener("click", () => {
+    const weight = parseFloat(slider.value) || 1.5;
+    const qty = parseInt(qtyInput.value) || 1;
+
+    addCustomItem(product.id, weight, qty);
+
+    const originalText = addToCartBtn.innerHTML;
+    addToCartBtn.innerHTML = `<span>✓</span> <span data-i18n="productAdded"></span>`;
+    addToCartBtn.disabled = true;
+    applyI18n(addToCartBtn);
+
+    setTimeout(() => {
+      addToCartBtn.innerHTML = originalText;
+      addToCartBtn.disabled = false;
+      applyI18n(addToCartBtn);
+    }, 1200);
+  });
+
+  updateCalculations();
 }
 
 function flashAdded(btn) {
-    const original = btn.textContent;
-    btn.textContent = t("productAdded", lang);
-    btn.disabled = true;
-    setTimeout(() => {
-        btn.textContent = original;
-        btn.disabled = false;
-        applyI18n(btn.parentElement);
-    }, 1100);
+  const original = btn.textContent;
+  btn.textContent = t("productAdded", lang);
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.disabled = false;
+    applyI18n(btn.parentElement);
+  }, 1100);
 }
 
 // ---------------------------------------------------------------------------
@@ -711,7 +735,7 @@ function flashAdded(btn) {
 // ---------------------------------------------------------------------------
 
 function galleryHtml() {
-    return `
+  return `
     <section id="gallery" class="bg-white border-y border-[var(--color-divider)]">
       <div class="max-w-5xl mx-auto px-5 py-14">
         <div class="mb-8 reveal">
@@ -725,16 +749,16 @@ function galleryHtml() {
 }
 
 function renderGallery() {
-    const grid = document.getElementById("galleryGrid");
-    if (!grid) return;
-    grid.innerHTML = galleryImages
-        .map(
-            (src) => `
+  const grid = document.getElementById("galleryGrid");
+  if (!grid) return;
+  grid.innerHTML = galleryImages
+    .map(
+      (src) => `
       <div class="reveal rounded-2xl overflow-hidden h-40 sm:h-48">
         <img src="${src}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt="Tiger Lairo Farm Gallery Image - Poultry in Mau" />
       </div>`
-        )
-        .join("");
+    )
+    .join("");
 }
 
 // ---------------------------------------------------------------------------
@@ -742,7 +766,7 @@ function renderGallery() {
 // ---------------------------------------------------------------------------
 
 function offersHtml() {
-    return `
+  return `
     <section id="offers" class="max-w-5xl mx-auto px-5 py-14">
       <div class="mb-8 reveal">
         <h2 class="text-2xl sm:text-3xl mb-2" data-i18n="offersTitle"></h2>
@@ -754,18 +778,18 @@ function offersHtml() {
 }
 
 function renderOffers() {
-    const grid = document.getElementById("offersGrid");
-    if (!grid) return;
-    grid.innerHTML = offers
-        .map(
-            (o) => `
+  const grid = document.getElementById("offersGrid");
+  if (!grid) return;
+  grid.innerHTML = offers
+    .map(
+      (o) => `
       <div class="reveal rounded-2xl p-5 bg-white border border-[var(--color-divider)] flex flex-col">
         <span class="inline-flex w-fit items-center px-2.5 py-1 rounded-full bg-[var(--color-accent)]/15 text-[var(--color-accent)] text-xs font-bold mb-3">${o.badge[lang] || o.badge.en}</span>
         <h3 class="font-bold text-lg mb-1">${o.title[lang] || o.title.en}</h3>
         <p class="text-sm text-[var(--color-muted)] leading-relaxed">${o.body[lang] || o.body.en}</p>
       </div>`
-        )
-        .join("");
+    )
+    .join("");
 }
 
 // ---------------------------------------------------------------------------
@@ -773,7 +797,7 @@ function renderOffers() {
 // ---------------------------------------------------------------------------
 
 function contactHtml() {
-    return `
+  return `
     <section id="contact" class="bg-white border-y border-[var(--color-divider)]">
       <div class="max-w-5xl mx-auto px-5 py-14">
         <h2 class="text-2xl sm:text-3xl mb-8 text-center reveal" data-i18n="contactTitle"></h2>
@@ -816,8 +840,8 @@ function contactHtml() {
 // ---------------------------------------------------------------------------
 
 function footerHtml() {
-    const year = new Date().getFullYear();
-    return `
+  const year = new Date().getFullYear();
+  return `
     <footer id="mainFooter" class="bg-[var(--color-ink)] text-white relative overflow-hidden">
       <div class="max-w-5xl mx-auto px-5 py-12 grid sm:grid-cols-3 gap-8">
         <div>
@@ -883,7 +907,7 @@ function footerHtml() {
 // ---------------------------------------------------------------------------
 
 function cartDrawerHtml() {
-    return `
+  return `
     <div id="cartBackdrop" class="drawer-backdrop"></div>
     <aside id="cartDrawer" class="drawer" aria-label="Cart">
       <div class="flex items-center justify-between p-4 border-b border-[var(--color-divider)]">
@@ -897,33 +921,33 @@ function cartDrawerHtml() {
 }
 
 function renderCart() {
-    const body = document.getElementById("cartBody");
-    const footer = document.getElementById("cartFooter");
-    if (!body || !footer) return;
-    const { items } = getState();
-    if (items.length === 0) {
-        body.innerHTML = `
+  const body = document.getElementById("cartBody");
+  const footer = document.getElementById("cartFooter");
+  if (!body || !footer) return;
+  const { items } = getState();
+  if (items.length === 0) {
+    body.innerHTML = `
       <div class="text-center text-[var(--color-muted)] py-16 px-4">
         <div class="text-5xl mb-3">🛒</div>
         <p data-i18n="cartEmpty"></p>
       </div>`;
-        footer.innerHTML = "";
-        renderCartBadge();
-        return;
-    }
-    body.innerHTML = items.map(cartLineHtml).join("");
-    applyI18n(body);
-    wireCartLines(body);
+    footer.innerHTML = "";
+    renderCartBadge();
+    return;
+  }
+  body.innerHTML = items.map(cartLineHtml).join("");
+  applyI18n(body);
+  wireCartLines(body);
 
-    const sub = subtotal();
-    const fee = deliveryFee(deliveryMethod);
-    const tot = total(deliveryMethod);
-    const freeNote =
-        fee === 0 && deliveryMethod === "home" && sub > 0
-            ? `<div class="text-sm text-[var(--color-success)] font-semibold mb-2" data-i18n="freeDeliveryBadge"></div>`
-            : "";
+  const sub = subtotal();
+  const fee = deliveryFee(deliveryMethod);
+  const tot = total(deliveryMethod);
+  const freeNote =
+    fee === 0 && deliveryMethod === "home" && sub > 0
+      ? `<div class="text-sm text-[var(--color-success)] font-semibold mb-2" data-i18n="freeDeliveryBadge"></div>`
+      : "";
 
-    footer.innerHTML = `
+  footer.innerHTML = `
     ${freeNote}
     <div class="flex justify-between text-sm text-[var(--color-muted)] mb-1">
       <span data-i18n="cartSubtotal"></span><span>₹${sub.toFixed(2)}</span>
@@ -940,30 +964,30 @@ function renderCart() {
       <button id="cartCheckout" class="btn-primary flex-1" data-i18n="cartCheckout"></button>
     </div>
   `;
-    applyI18n(footer);
-    document.getElementById("cartClear")?.addEventListener("click", () => {
-        if (confirm(t("cartClear", lang) + "?")) clearCart();
-    });
-    document.getElementById("cartCheckout")?.addEventListener("click", openCheckout);
-    renderCartBadge();
+  applyI18n(footer);
+  document.getElementById("cartClear")?.addEventListener("click", () => {
+    if (confirm(t("cartClear", lang) + "?")) clearCart();
+  });
+  document.getElementById("cartCheckout")?.addEventListener("click", openCheckout);
+  renderCartBadge();
 }
 
 function cartLineHtml(item) {
-    const product = products.find((p) => p.id === item.id);
-    if (!product) return "";
-    const price = product.unit === "piece" ? product.pricePerPiece : product.pricePerKg;
-    const lt = (price * item.qty).toFixed(2);
-    const unitLabel = item.unit === "piece" ? t("productPerPiece", lang) : t("productPerKg", lang);
+  const product = products.find((p) => p.id === item.id);
+  if (!product) return "";
+  const price = product.unit === "piece" ? product.pricePerPiece : product.pricePerKg;
+  const lt = (price * item.qty).toFixed(2);
+  const unitLabel = item.unit === "piece" ? t("productPerPiece", lang) : t("productPerKg", lang);
 
-    const details = item.weightPerPiece
-        ? `<span class="font-semibold text-[var(--color-primary)]">${item.pcs} pcs × ${item.weightPerPiece.toFixed(1)} kg</span> (₹${price}/kg)`
-        : `₹${price} ${unitLabel}`;
+  const details = item.weightPerPiece
+    ? `<span class="font-semibold text-[var(--color-primary)]">${item.pcs} pcs × ${item.weightPerPiece.toFixed(1)} kg</span> (₹${price}/kg)`
+    : `₹${price} ${unitLabel}`;
 
-    const displayQty = item.weightPerPiece ? item.pcs : item.qty;
-    const step = item.weightPerPiece ? "1" : (item.unit === "piece" ? "1" : "0.25");
-    const inputMode = item.weightPerPiece ? "numeric" : (item.unit === "piece" ? "numeric" : "decimal");
+  const displayQty = item.weightPerPiece ? item.pcs : item.qty;
+  const step = item.weightPerPiece ? "1" : (item.unit === "piece" ? "1" : "0.25");
+  const inputMode = item.weightPerPiece ? "numeric" : (item.unit === "piece" ? "numeric" : "decimal");
 
-    return `
+  return `
     <div class="flex gap-3 py-3 border-b border-[var(--color-divider)]" data-line="${item.id}" data-unit="${item.unit}" ${item.weightPerPiece ? `data-weight-per-piece="${item.weightPerPiece}"` : ''}>
       <img src="${product.image}" class="w-16 h-16 rounded-xl object-cover" alt="" loading="lazy" />
       <div class="flex-1 min-w-0">
@@ -982,76 +1006,76 @@ function cartLineHtml(item) {
 }
 
 function wireCartLines(scope) {
-    scope.querySelectorAll("[data-line]").forEach((line) => {
-        const id = line.dataset.line;
-        const unit = line.dataset.unit;
-        const weightPerPiece = parseFloat(line.getAttribute("data-weight-per-piece")) || null;
-        const input = line.querySelector("input");
+  scope.querySelectorAll("[data-line]").forEach((line) => {
+    const id = line.dataset.line;
+    const unit = line.dataset.unit;
+    const weightPerPiece = parseFloat(line.getAttribute("data-weight-per-piece")) || null;
+    const input = line.querySelector("input");
 
-        if (weightPerPiece) {
-            line.querySelector(".line-minus")?.addEventListener("click", () => {
-                const currentPcs = parseInt(input.value) || 0;
-                setCustomQty(id, weightPerPiece, currentPcs - 1);
-            });
-            line.querySelector(".line-plus")?.addEventListener("click", () => {
-                const currentPcs = parseInt(input.value) || 0;
-                setCustomQty(id, weightPerPiece, currentPcs + 1);
-            });
-            input.addEventListener("change", () => {
-                setCustomQty(id, weightPerPiece, parseInt(input.value) || 0);
-            });
-            line.querySelector(".line-remove")?.addEventListener("click", () => {
-                removeCustomItem(id, weightPerPiece);
-            });
-        } else {
-            const step = unit === "piece" ? 1 : 0.25;
-            line.querySelector(".line-minus")?.addEventListener("click", () => {
-                setQty(id, unit, (parseFloat(input.value) || 0) - step);
-            });
-            line.querySelector(".line-plus")?.addEventListener("click", () => {
-                setQty(id, unit, (parseFloat(input.value) || 0) + step);
-            });
-            input.addEventListener("change", () => {
-                setQty(id, unit, parseFloat(input.value) || 0);
-            });
-            line.querySelector(".line-remove")?.addEventListener("click", () => {
-                removeItem(id, unit);
-            });
-        }
-    });
+    if (weightPerPiece) {
+      line.querySelector(".line-minus")?.addEventListener("click", () => {
+        const currentPcs = parseInt(input.value) || 0;
+        setCustomQty(id, weightPerPiece, currentPcs - 1);
+      });
+      line.querySelector(".line-plus")?.addEventListener("click", () => {
+        const currentPcs = parseInt(input.value) || 0;
+        setCustomQty(id, weightPerPiece, currentPcs + 1);
+      });
+      input.addEventListener("change", () => {
+        setCustomQty(id, weightPerPiece, parseInt(input.value) || 0);
+      });
+      line.querySelector(".line-remove")?.addEventListener("click", () => {
+        removeCustomItem(id, weightPerPiece);
+      });
+    } else {
+      const step = unit === "piece" ? 1 : 0.25;
+      line.querySelector(".line-minus")?.addEventListener("click", () => {
+        setQty(id, unit, (parseFloat(input.value) || 0) - step);
+      });
+      line.querySelector(".line-plus")?.addEventListener("click", () => {
+        setQty(id, unit, (parseFloat(input.value) || 0) + step);
+      });
+      input.addEventListener("change", () => {
+        setQty(id, unit, parseFloat(input.value) || 0);
+      });
+      line.querySelector(".line-remove")?.addEventListener("click", () => {
+        removeItem(id, unit);
+      });
+    }
+  });
 }
 
 function renderCartBadge() {
-    const badge = document.getElementById("cartBadge");
-    const floating = document.getElementById("floatingCartBtn");
-    const count = itemCount();
-    if (badge) {
-        if (count > 0) {
-            badge.textContent = count;
-            badge.classList.remove("hidden");
-        } else {
-            badge.classList.add("hidden");
-        }
+  const badge = document.getElementById("cartBadge");
+  const floating = document.getElementById("floatingCartBtn");
+  const count = itemCount();
+  if (badge) {
+    if (count > 0) {
+      badge.textContent = count;
+      badge.classList.remove("hidden");
+    } else {
+      badge.classList.add("hidden");
     }
-    if (floating) {
-        if (count > 0) floating.classList.remove("hidden");
-        else floating.classList.add("hidden");
-        const fbadge = document.getElementById("floatingCartBadge");
-        if (fbadge) fbadge.textContent = count;
-    }
+  }
+  if (floating) {
+    if (count > 0) floating.classList.remove("hidden");
+    else floating.classList.add("hidden");
+    const fbadge = document.getElementById("floatingCartBadge");
+    if (fbadge) fbadge.textContent = count;
+  }
 }
 
 function openCart() {
-    cartOpen = true;
-    document.getElementById("cartDrawer")?.classList.add("is-open");
-    document.getElementById("cartBackdrop")?.classList.add("is-open");
-    document.body.style.overflow = "hidden";
+  cartOpen = true;
+  document.getElementById("cartDrawer")?.classList.add("is-open");
+  document.getElementById("cartBackdrop")?.classList.add("is-open");
+  document.body.style.overflow = "hidden";
 }
 function closeCart() {
-    cartOpen = false;
-    document.getElementById("cartDrawer")?.classList.remove("is-open");
-    document.getElementById("cartBackdrop")?.classList.remove("is-open");
-    if (!checkoutOpen) document.body.style.overflow = "";
+  cartOpen = false;
+  document.getElementById("cartDrawer")?.classList.remove("is-open");
+  document.getElementById("cartBackdrop")?.classList.remove("is-open");
+  if (!checkoutOpen) document.body.style.overflow = "";
 }
 
 // ---------------------------------------------------------------------------
@@ -1059,7 +1083,7 @@ function closeCart() {
 // ---------------------------------------------------------------------------
 
 function floatingCartHtml() {
-    return `
+  return `
     <button id="floatingCartBtn" class="md:hidden hidden fixed bottom-5 right-5 z-30 h-14 px-5 rounded-full bg-[var(--color-primary)] text-white font-bold shadow-2xl flex items-center gap-2 pb-safe">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
       <span data-i18n="cartTitle"></span>
@@ -1073,7 +1097,7 @@ function floatingCartHtml() {
 // ---------------------------------------------------------------------------
 
 function checkoutModalHtml() {
-    return `
+  return `
     <div id="checkoutBackdrop" class="modal-overlay"></div>
     <div id="checkoutModal" class="modal-overlay" style="pointer-events:none; opacity:0;">
       <div class="bg-white rounded-3xl w-full max-w-md max-h-[92vh] overflow-y-auto no-scrollbar pb-safe">
@@ -1156,94 +1180,94 @@ function checkoutModalHtml() {
 }
 
 function openCheckout() {
-    if (getState().items.length === 0) return;
-    closeCart();
-    checkoutOpen = true;
-    const modal = document.getElementById("checkoutModal");
-    const back = document.getElementById("checkoutBackdrop");
-    modal.style.opacity = "1";
-    modal.style.pointerEvents = "auto";
-    back.style.opacity = "1";
-    back.style.pointerEvents = "auto";
-    document.body.style.overflow = "hidden";
-    renderCheckout_summary_only();
-    applyI18n(modal);
+  if (getState().items.length === 0) return;
+  closeCart();
+  checkoutOpen = true;
+  const modal = document.getElementById("checkoutModal");
+  const back = document.getElementById("checkoutBackdrop");
+  modal.style.opacity = "1";
+  modal.style.pointerEvents = "auto";
+  back.style.opacity = "1";
+  back.style.pointerEvents = "auto";
+  document.body.style.overflow = "hidden";
+  renderCheckout_summary_only();
+  applyI18n(modal);
 
-    // Show/hide QR code when payment method changes
-    document.querySelectorAll("input[name='paymentMethod']").forEach((r) => {
-        r.onchange = () => {
-            paymentMethod = r.value;
-            document.getElementById("qrCodeContainer").classList.toggle("hidden", paymentMethod !== "online");
-        };
-    });
+  // Show/hide QR code when payment method changes
+  document.querySelectorAll("input[name='paymentMethod']").forEach((r) => {
+    r.onchange = () => {
+      paymentMethod = r.value;
+      document.getElementById("qrCodeContainer").classList.toggle("hidden", paymentMethod !== "online");
+    };
+  });
 }
 
 function closeCheckout() {
-    checkoutOpen = false;
-    const modal = document.getElementById("checkoutModal");
-    const back = document.getElementById("checkoutBackdrop");
-    if (modal) {
-        modal.style.opacity = "0";
-        modal.style.pointerEvents = "none";
-    }
-    if (back) {
-        back.style.opacity = "0";
-        back.style.pointerEvents = "none";
-    }
-    document.body.style.overflow = "";
+  checkoutOpen = false;
+  const modal = document.getElementById("checkoutModal");
+  const back = document.getElementById("checkoutBackdrop");
+  if (modal) {
+    modal.style.opacity = "0";
+    modal.style.pointerEvents = "none";
+  }
+  if (back) {
+    back.style.opacity = "0";
+    back.style.pointerEvents = "none";
+  }
+  document.body.style.overflow = "";
 }
 
 function renderCheckout_summary_only() {
-    const wrap = document.getElementById("checkoutSummary");
-    if (!wrap) return;
-    wrap.innerHTML = checkoutSummaryHtml();
-    applyI18n(wrap);
-    updateUpiLinks();
+  const wrap = document.getElementById("checkoutSummary");
+  if (!wrap) return;
+  wrap.innerHTML = checkoutSummaryHtml();
+  applyI18n(wrap);
+  updateUpiLinks();
 }
 
 function updateUpiLinks() {
-    const tot = total(deliveryMethod).toFixed(2);
-    const upiId = business.upiId;
-    const name = encodeURIComponent("Tiger's Poultry Farm");
-    
-    const elPaytm = document.getElementById("btnPaytm");
-    const elGpay = document.getElementById("btnGpay");
-    const elPhonepe = document.getElementById("btnPhonepe");
-    const elBhim = document.getElementById("btnBhim");
-    
-    if (elPaytm) elPaytm.href = `paytmmp://pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
-    if (elGpay) elGpay.href = `tez://upi/pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
-    if (elPhonepe) elPhonepe.href = `phonepe://pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
-    if (elBhim) elBhim.href = `bhim://pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
+  const tot = total(deliveryMethod).toFixed(2);
+  const upiId = business.upiId;
+  const name = encodeURIComponent("Tiger's Poultry Farm");
+
+  const elPaytm = document.getElementById("btnPaytm");
+  const elGpay = document.getElementById("btnGpay");
+  const elPhonepe = document.getElementById("btnPhonepe");
+  const elBhim = document.getElementById("btnBhim");
+
+  if (elPaytm) elPaytm.href = `paytmmp://pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
+  if (elGpay) elGpay.href = `tez://upi/pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
+  if (elPhonepe) elPhonepe.href = `phonepe://pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
+  if (elBhim) elBhim.href = `bhim://pay?pa=${upiId}&pn=${name}&am=${tot}&cu=INR`;
 }
 
 function checkoutSummaryHtml() {
-    const { items } = getState();
-    const sub = subtotal();
-    const fee = deliveryFee(deliveryMethod);
-    const tot = total(deliveryMethod);
-    const lines = items
-        .map((i) => {
-            const p = products.find((p) => p.id === i.id);
-            if (!p) return "";
-            const price = p.unit === "piece" ? p.pricePerPiece : p.pricePerKg;
+  const { items } = getState();
+  const sub = subtotal();
+  const fee = deliveryFee(deliveryMethod);
+  const tot = total(deliveryMethod);
+  const lines = items
+    .map((i) => {
+      const p = products.find((p) => p.id === i.id);
+      if (!p) return "";
+      const price = p.unit === "piece" ? p.pricePerPiece : p.pricePerKg;
 
-            const detailLabel = i.weightPerPiece
-                ? `${p.name[lang] || p.name.en} (${i.pcs} pcs × ${i.weightPerPiece.toFixed(1)} kg)`
-                : `${p.name[lang] || p.name.en} × ${i.qty}${i.unit === "piece" ? "" : " kg"}`;
+      const detailLabel = i.weightPerPiece
+        ? `${p.name[lang] || p.name.en} (${i.pcs} pcs × ${i.weightPerPiece.toFixed(1)} kg)`
+        : `${p.name[lang] || p.name.en} × ${i.qty}${i.unit === "piece" ? "" : " kg"}`;
 
-            return `
+      return `
         <div class="flex justify-between text-sm py-1">
           <span class="text-[var(--color-ink)]">${detailLabel}</span>
           <span class="font-semibold">₹${(price * i.qty).toFixed(2)}</span>
         </div>`;
-        })
-        .join("");
-    const freeBadge =
-        fee === 0 && deliveryMethod === "home" && sub > 0
-            ? `<div class="text-xs text-[var(--color-success)] font-semibold mb-1" data-i18n="freeDeliveryBadge"></div>`
-            : "";
-    return `
+    })
+    .join("");
+  const freeBadge =
+    fee === 0 && deliveryMethod === "home" && sub > 0
+      ? `<div class="text-xs text-[var(--color-success)] font-semibold mb-1" data-i18n="freeDeliveryBadge"></div>`
+      : "";
+  return `
     <div class="font-semibold text-sm mb-2" data-i18n="checkoutSummary"></div>
     ${lines}
     <hr class="divider my-2" />
@@ -1259,76 +1283,76 @@ function checkoutSummaryHtml() {
 // ---------------------------------------------------------------------------
 
 function submitOrder() {
-    const errors = [];
-    const form = document.getElementById("checkoutForm");
-    const name = form.name.value.trim();
-    const phone = form.phone.value.trim();
-    const address = ""; // Hardcoded empty since we only do pickup now
+  const errors = [];
+  const form = document.getElementById("checkoutForm");
+  const name = form.name.value.trim();
+  const phone = form.phone.value.trim();
+  const address = ""; // Hardcoded empty since we only do pickup now
 
-    if (getState().items.length === 0) errors.push(t("errEmpty", lang));
-    if (!name) errors.push(t("errName", lang));
-    if (!/^[0-9]{10}$/.test(phone)) errors.push(t("errPhone", lang));
+  if (getState().items.length === 0) errors.push(t("errEmpty", lang));
+  if (!name) errors.push(t("errName", lang));
+  if (!/^[0-9]{10}$/.test(phone)) errors.push(t("errPhone", lang));
 
-    const errBox = document.getElementById("checkoutErrors");
-    if (errors.length) {
-        errBox.innerHTML = errors.map((e) => `<div>${e}</div>`).join("");
-        errBox.classList.remove("hidden");
-        return;
-    }
-    errBox.classList.add("hidden");
+  const errBox = document.getElementById("checkoutErrors");
+  if (errors.length) {
+    errBox.innerHTML = errors.map((e) => `<div>${e}</div>`).join("");
+    errBox.classList.remove("hidden");
+    return;
+  }
+  errBox.classList.add("hidden");
 
-    const message = buildWhatsAppMessage({ name, phone, address });
-    showSendModal();
-    setTimeout(() => updateSendModal("opening"), 900);
+  const message = buildWhatsAppMessage({ name, phone, address });
+  showSendModal();
+  setTimeout(() => updateSendModal("opening"), 900);
+  setTimeout(() => {
+    const url = `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+
+    closeSend();
     setTimeout(() => {
-        const url = `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(message)}`;
-        window.open(url, "_blank");
-        
-        closeSend();
-        setTimeout(() => {
-            window.location.href = window.location.pathname;
-        }, 300);
-    }, 1700);
+      window.location.href = window.location.pathname;
+    }, 300);
+  }, 1700);
 }
 
 function buildWhatsAppMessage({ name, phone, address }) {
-    const { items } = getState();
-    const sub = subtotal();
-    const fee = deliveryFee(deliveryMethod);
-    const tot = total(deliveryMethod);
+  const { items } = getState();
+  const sub = subtotal();
+  const fee = deliveryFee(deliveryMethod);
+  const tot = total(deliveryMethod);
 
-    const lines = items
-        .map((i, idx) => {
-            const p = products.find((p) => p.id === i.id);
-            if (!p) return "";
-            const price = p.unit === "piece" ? p.pricePerPiece : p.pricePerKg;
-            const u = i.unit === "piece" ? "pcs" : "kg";
-            
-            if (i.weightPerPiece) {
-                return `${idx + 1}. ${p.name[lang] || p.name.en} (${i.pcs} pcs × ${i.weightPerPiece.toFixed(1)} kg) — ${i.qty} kg × ₹${price} = ₹${(price * i.qty).toFixed(2)}`;
-            }
-            return `${idx + 1}. ${p.name[lang] || p.name.en} — ${i.qty} ${u} × ₹${price} = ₹${(price * i.qty).toFixed(2)}`;
-        })
-        .join("\n");
+  const lines = items
+    .map((i, idx) => {
+      const p = products.find((p) => p.id === i.id);
+      if (!p) return "";
+      const price = p.unit === "piece" ? p.pricePerPiece : p.pricePerKg;
+      const u = i.unit === "piece" ? "pcs" : "kg";
 
-    const method = deliveryMethod === "pickup" ? t("checkoutPickup", lang) : t("checkoutHome", lang);
-    const payMethod = paymentMethod === "cash" ? t("paymentCash", lang) : t("paymentOnline", lang);
+      if (i.weightPerPiece) {
+        return `${idx + 1}. ${p.name[lang] || p.name.en} (${i.pcs} pcs × ${i.weightPerPiece.toFixed(1)} kg) — ${i.qty} kg × ₹${price} = ₹${(price * i.qty).toFixed(2)}`;
+      }
+      return `${idx + 1}. ${p.name[lang] || p.name.en} — ${i.qty} ${u} × ₹${price} = ₹${(price * i.qty).toFixed(2)}`;
+    })
+    .join("\n");
 
-    return [
-        `*${t("brand", lang)}* — ${t("cartTitle", lang)}`,
-        "",
-        `*${t("checkoutName", lang)}:* ${name}`,
-        `*${t("checkoutPhone", lang)}:* ${phone}`,
-        `*${t("checkoutDelivery", lang)}:* ${method}`,
-        `*${t("checkoutPayment", lang)}:* ${payMethod}`,
-        "",
-        `*${t("checkoutSummary", lang)}:*`,
-        lines,
-        "",
-        `${t("cartSubtotal", lang)}: ₹${sub.toFixed(2)}`,
-        `${t("cartDelivery", lang)}: ${fee === 0 ? t("cartFree", lang) : "₹" + fee}`,
-        `*${t("cartTotal", lang)}: ₹${tot.toFixed(2)}*`,
-    ].join("\n");
+  const method = deliveryMethod === "pickup" ? t("checkoutPickup", lang) : t("checkoutHome", lang);
+  const payMethod = paymentMethod === "cash" ? t("paymentCash", lang) : t("paymentOnline", lang);
+
+  return [
+    `*${t("brand", lang)}* — ${t("cartTitle", lang)}`,
+    "",
+    `*${t("checkoutName", lang)}:* ${name}`,
+    `*${t("checkoutPhone", lang)}:* ${phone}`,
+    `*${t("checkoutDelivery", lang)}:* ${method}`,
+    `*${t("checkoutPayment", lang)}:* ${payMethod}`,
+    "",
+    `*${t("checkoutSummary", lang)}:*`,
+    lines,
+    "",
+    `${t("cartSubtotal", lang)}: ₹${sub.toFixed(2)}`,
+    `${t("cartDelivery", lang)}: ${fee === 0 ? t("cartFree", lang) : "₹" + fee}`,
+    `*${t("cartTotal", lang)}: ₹${tot.toFixed(2)}*`,
+  ].join("\n");
 }
 
 // ---------------------------------------------------------------------------
@@ -1336,7 +1360,7 @@ function buildWhatsAppMessage({ name, phone, address }) {
 // ---------------------------------------------------------------------------
 
 function sendModalHtml() {
-    return `
+  return `
     <div id="sendModal" class="modal-overlay" style="pointer-events:none; opacity:0;">
       <div class="bg-white rounded-3xl w-full max-w-xs p-8 text-center">
         <div class="w-16 h-16 rounded-full bg-[#25D366]/15 mx-auto flex items-center justify-center mb-4">
@@ -1350,21 +1374,21 @@ function sendModalHtml() {
 }
 
 function showSendModal() {
-    const modal = document.getElementById("sendModal");
-    modal.style.opacity = "1";
-    modal.style.pointerEvents = "auto";
-    document.getElementById("sendText").textContent = t("sendPreparing", lang);
+  const modal = document.getElementById("sendModal");
+  modal.style.opacity = "1";
+  modal.style.pointerEvents = "auto";
+  document.getElementById("sendText").textContent = t("sendPreparing", lang);
 }
 function updateSendModal(stage) {
-    document.getElementById("sendText").textContent = t("sendOpening", lang);
+  document.getElementById("sendText").textContent = t("sendOpening", lang);
 }
 function closeSend() {
-    const modal = document.getElementById("sendModal");
-    if (!modal) return;
-    modal.style.opacity = "0";
-    modal.style.pointerEvents = "none";
-    clearCart();
-    closeCheckout();
+  const modal = document.getElementById("sendModal");
+  if (!modal) return;
+  modal.style.opacity = "0";
+  modal.style.pointerEvents = "none";
+  clearCart();
+  closeCheckout();
 }
 
 // ---------------------------------------------------------------------------
@@ -1372,35 +1396,35 @@ function closeSend() {
 // ---------------------------------------------------------------------------
 
 function applyI18n(scope) {
-    scope.querySelectorAll("[data-i18n]").forEach((el) => {
-        const key = el.getAttribute("data-i18n");
-        const val = t(key, lang);
-        if (val) el.textContent = val;
-    });
-    scope.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
-        const key = el.getAttribute("data-i18n-placeholder");
-        const val = t(key, lang);
-        if (val) el.placeholder = val;
-    });
+  scope.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    const val = t(key, lang);
+    if (val) el.textContent = val;
+  });
+  scope.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    const val = t(key, lang);
+    if (val) el.placeholder = val;
+  });
 }
 
 let revealObserver = null;
 function observeReveal() {
-    if (revealObserver) revealObserver.disconnect();
-    revealObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((e) => {
-                if (e.isIntersecting) {
-                    e.target.classList.add("is-visible");
-                    revealObserver.unobserve(e.target);
-                }
-            });
-        },
-        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
-    root.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
-        revealObserver.observe(el);
-    });
+  if (revealObserver) revealObserver.disconnect();
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-visible");
+          revealObserver.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+  root.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => {
+    revealObserver.observe(el);
+  });
 }
 
 // ---------------------------------------------------------------------------

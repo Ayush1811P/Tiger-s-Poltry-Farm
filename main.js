@@ -215,6 +215,99 @@ function wireShell() {
         renderCart();
         if (checkoutOpen) renderCheckout_summary_only();
     });
+
+    wireFooterMap();
+}
+
+function wireFooterMap() {
+    const showMapBtn = document.getElementById("showMapBtn");
+    const closeMapBtn = document.getElementById("closeMapBtn");
+    const mapContainer = document.getElementById("footerMapContainer");
+    const mapHeader = document.getElementById("footerMapHeader");
+
+    if (!showMapBtn || !mapContainer) return;
+
+    showMapBtn.addEventListener("click", () => {
+        mapContainer.classList.remove("hidden");
+        showMapBtn.classList.add("hidden");
+    });
+
+    closeMapBtn.addEventListener("click", () => {
+        mapContainer.classList.add("hidden");
+        showMapBtn.classList.remove("hidden");
+    });
+
+    // Make map draggable
+    let isDragging = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    if (mapHeader) {
+        mapHeader.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
+
+        mapHeader.addEventListener("touchstart", dragStart, { passive: true });
+        document.addEventListener("touchend", dragEnd);
+        document.addEventListener("touchmove", drag, { passive: true });
+    }
+
+    function dragStart(e) {
+        if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target === mapHeader || e.target.parentNode === mapHeader) {
+            isDragging = true;
+        }
+    }
+
+    function dragEnd(e) {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            if (e.type === "touchmove") {
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+            xOffset = currentX;
+            yOffset = currentY;
+            setTranslate(currentX, currentY, mapContainer);
+        }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+        const footer = document.getElementById("mainFooter");
+        if (footer) {
+            const minX = -(footer.offsetWidth - el.offsetWidth - 20);
+            const maxX = 20;
+            const minY = -(footer.offsetHeight - el.offsetHeight - 64);
+            const maxY = 64;
+            xPos = Math.max(minX, Math.min(xPos, maxX));
+            yPos = Math.max(minY, Math.min(yPos, maxY));
+            
+            xOffset = xPos;
+            yOffset = yPos;
+            currentX = xPos;
+            currentY = yPos;
+        }
+        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -315,14 +408,15 @@ function heroHtml() {
     <section id="home" class="relative">
       <div class="relative h-[70vh] min-h-[480px] max-h-[640px] overflow-hidden">
         <img src="/landing%20page.jpg"
-             alt="Poultry farm" class="absolute inset-0 w-full h-full object-cover" loading="eager" />
+             alt="Tiger Lairo Layer Poultry Farm in Mau" class="absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async" />
         <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/55"></div>
         <div class="relative h-full max-w-5xl mx-auto px-5 flex flex-col justify-center text-white">
           <span class="inline-flex w-fit items-center gap-2 bg-white/15 backdrop-blur px-3 py-1.5 rounded-full text-sm font-semibold mb-4">
             <span class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></span>
             <span data-i18n="tagline"></span>
           </span>
-          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 max-w-xl" data-i18n="brand"></h1>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-1 max-w-xl" data-i18n="brand"></h1>
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 max-w-xl text-white/90" data-i18n="subBrand"></h2>
           <div class="hero-rotator text-lg sm:text-xl font-semibold text-white/95 max-w-lg mb-6">${rotator}</div>
           <div class="flex flex-wrap gap-3">
             <button id="heroOrder" class="btn-primary !bg-[var(--color-primary)] !text-white" data-i18n="heroCta"></button>
@@ -367,8 +461,8 @@ function aboutHtml() {
           </div>
         </div>
         <div class="reveal grid grid-cols-2 gap-3">
-          <img src="/about_image.jpg" loading="lazy" class="rounded-2xl h-56 w-full object-cover" alt="Farm workers" />
-          <img src="/about_2.jpg" loading="lazy" class="rounded-2xl h-56 w-full object-cover mt-6" alt="Poultry breeds" />
+          <img src="/about_image.jpg" loading="lazy" decoding="async" class="rounded-2xl h-56 w-full object-cover" alt="Workers at Tiger Lairo Layer Farm Mau" />
+          <img src="/about_2.jpg" loading="lazy" decoding="async" class="rounded-2xl h-56 w-full object-cover mt-6" alt="Healthy layer poultry breeds at Tiger Lairo Farm" />
         </div>
       </div>
     </section>
@@ -441,7 +535,7 @@ function renderProducts() {
       <div class="grid md:grid-cols-12">
         <!-- Left Side: Image -->
         <div class="md:col-span-5 relative min-h-[280px] md:min-h-[460px] bg-slate-100">
-          <img src="${p.image}" alt="${p.name[lang] || p.name.en}" class="absolute inset-0 w-full h-full object-cover" />
+          <img src="${p.image}" alt="${p.name[lang] || p.name.en} - Farm Fresh Layer Chicken" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"></div>
           <span class="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-[var(--color-primary)] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
@@ -637,7 +731,7 @@ function renderGallery() {
         .map(
             (src) => `
       <div class="reveal rounded-2xl overflow-hidden h-40 sm:h-48">
-        <img src="${src}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt="Gallery" />
+        <img src="${src}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt="Tiger Lairo Farm Gallery Image - Poultry in Mau" />
       </div>`
         )
         .join("");
@@ -724,7 +818,7 @@ function contactHtml() {
 function footerHtml() {
     const year = new Date().getFullYear();
     return `
-    <footer class="bg-[var(--color-ink)] text-white">
+    <footer id="mainFooter" class="bg-[var(--color-ink)] text-white relative overflow-hidden">
       <div class="max-w-5xl mx-auto px-5 py-12 grid sm:grid-cols-3 gap-8">
         <div>
           <div class="flex items-center gap-2 mb-3">
@@ -750,10 +844,34 @@ function footerHtml() {
           </ul>
         </div>
       </div>
-      <div class="border-t border-white/10">
-        <div class="max-w-5xl mx-auto px-5 py-4 text-center text-xs text-white/60">
-          © ${year} <span data-i18n="brand"></span>. <span data-i18n="footerRights"></span><br>
-          Developer: Ayush Singh
+      <div class="border-t border-white/10 relative">
+        <div class="max-w-5xl mx-auto px-5 py-4 flex flex-col sm:flex-row justify-between items-center text-xs text-white/60">
+          <div class="text-center sm:text-left mb-3 sm:mb-0">
+            © ${year} <span data-i18n="brand"></span>. <span data-i18n="footerRights"></span><br>
+            Developer: Ayush Singh
+          </div>
+          <button id="showMapBtn" class="hidden bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-2 shadow">
+            <span>📍</span> <span data-i18n="showMap"></span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Movable Map Container -->
+      <div id="footerMapContainer" class="absolute bottom-16 right-5 w-[200px] h-[150px] bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden z-40 border border-[var(--color-divider)] flex flex-col">
+        <div id="footerMapHeader" class="bg-[var(--color-primary)] text-white px-3 py-2 flex justify-between items-center cursor-move select-none">
+          <span class="font-bold text-sm flex items-center gap-2 pointer-events-none">📍 <span data-i18n="mapLocation"></span></span>
+          <button id="closeMapBtn" class="text-white hover:text-gray-200 text-lg leading-none" aria-label="Close Map">✕</button>
+        </div>
+        <div class="flex-1 w-full bg-gray-100 relative pointer-events-auto">
+          <iframe 
+            src="https://www.google.com/maps?q=25.9417,83.5601&z=14&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
         </div>
       </div>
     </footer>

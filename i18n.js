@@ -3,7 +3,8 @@
 // Keep language simple — basic English, clear Hindi.
 
 export const translations = {
-    brand: { en: "Tiger's Poultry Farm", hi: "टाइगर पोल्ट्री फार्म" },
+    brand: { en: "Tiger Lairo Farm", hi: "Tiger Lairo Farm" },
+    subBrand: { en: "Tiger's Poultry Farm", hi: "टाइगर पोल्ट्री फार्म" },
     tagline: { en: "Fresh Chicken, Easy Ordering", hi: "ताज़ा चिकन, आसान ऑर्डर" },
 
     // Language selector
@@ -43,8 +44,8 @@ export const translations = {
     // About
     aboutTitle: { en: "About Our Farm", hi: "हमारे फार्म के बारे में" },
     aboutBody: {
-        en: "Tiger's Poultry Farm raises healthy chickens in a clean, natural environment. We feed them well, care for them daily, and deliver fresh chicken to families and businesses across the region.",
-        hi: "टाइगर पोल्ट्री फार्म स्वच्छ, प्राकृतिक वातावरण में स्वस्थ मुर्गियाँ पालता है। हम उन्हें अच्छा खाना देते हैं, रोज़ देखभाल करते हैं, और ताज़ा चिकन पूरे क्षेत्र के परिवारों और व्यापारियों तक पहुँचाते हैं।",
+        en: "Tiger Lairo Farm raises healthy layer chickens in a clean, natural environment in Mau, Uttar Pradesh. We feed them well, care for them daily, and deliver farm fresh eggs and fresh chicken to families and businesses across the region.",
+        hi: "टाइगर लैरो फार्म मऊ, उत्तर प्रदेश में स्वच्छ, प्राकृतिक वातावरण में स्वस्थ लेयर मुर्गियाँ पालता है। हम रोज़ देखभाल करते हैं, और ताज़े अंडे और ताज़ा चिकन पूरे क्षेत्र के परिवारों और व्यापारियों तक पहुँचाते हैं।",
     },
     aboutStat1: { en: "Happy Customers", hi: "खुश ग्राहक" },
     aboutStat2: { en: "Years of Trust", hi: "वर्षों का भरोसा" },
@@ -142,14 +143,14 @@ export const translations = {
     contactPhone: { en: "Phone", hi: "फ़ोन" },
     contactEmail: { en: "Email", hi: "ईमेल" },
     contactAddress: { en: "Location", hi: "स्थान" },
-    contactAddressValue: { en: "Tiger's Poultry Farm, Main Road, Your City", hi: "टाइगर पोल्ट्री फार्म, मेन रोड, आपका शहर" },
+    contactAddressValue: { en: "Tiger Lairo Farm, Main Road, Mau, Uttar Pradesh 275101", hi: "टाइगर लैरो फार्म, मेन रोड, मऊ, उत्तर प्रदेश 275101" },
     contactCallNow: { en: "Call Now", hi: "अभी कॉल करें" },
     contactSocial: { en: "Follow Us", hi: "हमें फॉलो करें" },
     contactSocialSoon: { en: "Facebook & Instagram coming soon", hi: "फेसबुक और इंस्टाग्राम जल्द आ रहे हैं" },
 
     // Footer
     footerRights: { en: "All rights reserved.", hi: "सर्वाधिकार सुरक्षित।" },
-    footerTagline: { en: "Fresh chicken, raised with care, ordered in seconds.", hi: "ताज़ा चिकन, प्यार से पाला, सेकंडों में ऑर्डर।" },
+    footerTagline: { en: "Fresh layer chicken and farm fresh eggs in Mau, raised with care.", hi: "मऊ में ताज़ा लेयर चिकन और ताज़े अंडे, प्यार से पाले गए।" },
     footerLinks: { en: "Quick Links", hi: "त्वरित लिंक" },
     footerContact: { en: "Contact", hi: "संपर्क" },
 
@@ -160,6 +161,8 @@ export const translations = {
     freeDeliveryBadge: { en: "Free Delivery", hi: "मुफ़्त डिलीवरी" },
     freeDeliveryNote: { en: "Free delivery on orders over ₹500.", hi: "₹500 से ज़्यादा के ऑर्डर पर मुफ़्त डिलीवरी।" },
     deliveryFee: { en: "Delivery charge", hi: "डिलीवरी शुल्क" },
+    showMap: { en: "Show Map", hi: "नक्शा दिखाएं" },
+    mapLocation: { en: "Tiger Lairo Farm Location", hi: "टाइगर लैरो फार्म का स्थान" },
 };
 
 // Helper to fetch a translated string for the current language.

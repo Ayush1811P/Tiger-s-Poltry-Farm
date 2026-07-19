@@ -1,0 +1,17 @@
+{
+  "name": "Tiger Lairo Farm",
+  "short_name": "Tiger Lairo Farm",
+  "description": "Tiger Lairo Farm — Tiger's Poultry Farm in Mau, UP. Fresh, healthy layer chicken and eggs for home & business.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F6F1",
+  "theme_color": "#2D6A4F",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ],
+  "lang": "en"
+}

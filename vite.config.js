@@ -8,4 +8,16 @@ export default defineConfig({
     host: true,
     allowedHosts: true,
   },
+  build: {
+    target: 'esnext',
+    minify: 'esbuild',
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['tailwindcss'],
+        },
+      },
+    },
+  },
 })

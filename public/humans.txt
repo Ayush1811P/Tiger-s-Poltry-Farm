@@ -1,0 +1,9 @@
+/* TEAM */
+Developer: Ayush Singh
+Role: Developer
+Contact: https://tigersfarm.netlify.app
+
+/* SITE */
+Last update: 2026-07-20
+Standards: HTML5, CSS3
+Components: Vite, Tailwind CSS

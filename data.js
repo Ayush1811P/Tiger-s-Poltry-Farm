@@ -40,10 +40,10 @@ export const galleryImages = [
 
 // Business contact details.
 export const business = {
-    phone: "9313222913",
+    phone: "7007305113",
     email: "awsmsi0300@gmail.com",
-    whatsappNumber: "919313222913", // with country code, no +
-    upiId: "YOUR_UPI_ID_HERE", // IMPORTANT: Replace this with actual UPI ID
+    whatsappNumber: "7007305113", // with country code, no +
+    upiId: "9839376102@ptsbi", // IMPORTANT: Replace this with actual UPI ID
     freeDeliveryThreshold: 500,
     deliveryFee: 40,
 };

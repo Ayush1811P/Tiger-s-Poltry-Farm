@@ -106,15 +106,8 @@ export function subtotal() {
     return state.items.reduce((sum, i) => sum + lineTotal(i), 0);
 }
 
-export function deliveryFee(method) {
-    if (method === "pickup") return 0;
-    const sub = subtotal();
-    if (sub >= business.freeDeliveryThreshold) return 0;
-    return business.deliveryFee;
-}
-
-export function total(method) {
-    return subtotal() + deliveryFee(method);
+export function total() {
+    return subtotal();
 }
 
 export function itemCount() {

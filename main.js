@@ -12,7 +12,6 @@ import {
   removeItem,
   clearCart,
   subtotal,
-  deliveryFee,
   total,
   itemCount,
   subscribe,
@@ -26,7 +25,6 @@ import {
 // ---------------------------------------------------------------------------
 
 let lang = localStorage.getItem("tpf_lang") || null; // "en" | "hi" | null
-let deliveryMethod = "pickup"; // pickup | home
 let paymentMethod = "cash"; // cash | online
 let cartOpen = false;
 let checkoutOpen = false;
@@ -187,12 +185,7 @@ function wireShell() {
     openCart();
   });
 
-  document.querySelectorAll("input[name='deliveryMethod']").forEach((r) => {
-    r.addEventListener("change", () => {
-      deliveryMethod = r.value;
-      renderCheckout_summary_only();
-    });
-  });
+
 
   document.getElementById("checkoutForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -940,21 +933,11 @@ function renderCart() {
   wireCartLines(body);
 
   const sub = subtotal();
-  const fee = deliveryFee(deliveryMethod);
-  const tot = total(deliveryMethod);
-  const freeNote =
-    fee === 0 && deliveryMethod === "home" && sub > 0
-      ? `<div class="text-sm text-[var(--color-success)] font-semibold mb-2" data-i18n="freeDeliveryBadge"></div>`
-      : "";
+  const tot = total();
 
   footer.innerHTML = `
-    ${freeNote}
     <div class="flex justify-between text-sm text-[var(--color-muted)] mb-1">
       <span data-i18n="cartSubtotal"></span><span>₹${sub.toFixed(2)}</span>
-    </div>
-    <div class="flex justify-between text-sm text-[var(--color-muted)] mb-2">
-      <span data-i18n="cartDelivery"></span>
-      <span>${fee === 0 ? `<span data-i18n="cartFree"></span>` : `₹${fee}`}</span>
     </div>
     <div class="flex justify-between font-bold text-lg mb-3">
       <span data-i18n="cartTotal"></span><span>₹${tot.toFixed(2)}</span>
@@ -1226,7 +1209,7 @@ function renderCheckout_summary_only() {
 }
 
 function updateUpiLinks() {
-  const tot = total(deliveryMethod).toFixed(2);
+  const tot = total().toFixed(2);
   const upiId = business.upiId;
   const name = encodeURIComponent("Tiger's Poultry Farm");
 
@@ -1244,8 +1227,7 @@ function updateUpiLinks() {
 function checkoutSummaryHtml() {
   const { items } = getState();
   const sub = subtotal();
-  const fee = deliveryFee(deliveryMethod);
-  const tot = total(deliveryMethod);
+  const tot = total();
   const lines = items
     .map((i) => {
       const p = products.find((p) => p.id === i.id);
@@ -1263,17 +1245,11 @@ function checkoutSummaryHtml() {
         </div>`;
     })
     .join("");
-  const freeBadge =
-    fee === 0 && deliveryMethod === "home" && sub > 0
-      ? `<div class="text-xs text-[var(--color-success)] font-semibold mb-1" data-i18n="freeDeliveryBadge"></div>`
-      : "";
   return `
     <div class="font-semibold text-sm mb-2" data-i18n="checkoutSummary"></div>
     ${lines}
     <hr class="divider my-2" />
     <div class="flex justify-between text-sm text-[var(--color-muted)]"><span data-i18n="cartSubtotal"></span><span>₹${sub.toFixed(2)}</span></div>
-    ${freeBadge}
-    <div class="flex justify-between text-sm text-[var(--color-muted)] mb-1"><span data-i18n="cartDelivery"></span><span>${fee === 0 ? `<span data-i18n="cartFree"></span>` : `₹${fee}`}</span></div>
     <div class="flex justify-between font-bold text-base"><span data-i18n="cartTotal"></span><span>₹${tot.toFixed(2)}</span></div>
   `;
 }
@@ -1287,7 +1263,6 @@ function submitOrder() {
   const form = document.getElementById("checkoutForm");
   const name = form.name.value.trim();
   const phone = form.phone.value.trim();
-  const address = ""; // Hardcoded empty since we only do pickup now
 
   if (getState().items.length === 0) errors.push(t("errEmpty", lang));
   if (!name) errors.push(t("errName", lang));
@@ -1301,7 +1276,7 @@ function submitOrder() {
   }
   errBox.classList.add("hidden");
 
-  const message = buildWhatsAppMessage({ name, phone, address });
+  const message = buildWhatsAppMessage({ name, phone });
   showSendModal();
   setTimeout(() => updateSendModal("opening"), 900);
   setTimeout(() => {
@@ -1315,11 +1290,10 @@ function submitOrder() {
   }, 1700);
 }
 
-function buildWhatsAppMessage({ name, phone, address }) {
+function buildWhatsAppMessage({ name, phone }) {
   const { items } = getState();
   const sub = subtotal();
-  const fee = deliveryFee(deliveryMethod);
-  const tot = total(deliveryMethod);
+  const tot = total();
 
   const lines = items
     .map((i, idx) => {
@@ -1335,7 +1309,6 @@ function buildWhatsAppMessage({ name, phone, address }) {
     })
     .join("\n");
 
-  const method = deliveryMethod === "pickup" ? t("checkoutPickup", lang) : t("checkoutHome", lang);
   const payMethod = paymentMethod === "cash" ? t("paymentCash", lang) : t("paymentOnline", lang);
 
   return [
@@ -1343,14 +1316,12 @@ function buildWhatsAppMessage({ name, phone, address }) {
     "",
     `*${t("checkoutName", lang)}:* ${name}`,
     `*${t("checkoutPhone", lang)}:* ${phone}`,
-    `*${t("checkoutDelivery", lang)}:* ${method}`,
     `*${t("checkoutPayment", lang)}:* ${payMethod}`,
     "",
     `*${t("checkoutSummary", lang)}:*`,
     lines,
     "",
     `${t("cartSubtotal", lang)}: ₹${sub.toFixed(2)}`,
-    `${t("cartDelivery", lang)}: ${fee === 0 ? t("cartFree", lang) : "₹" + fee}`,
     `*${t("cartTotal", lang)}: ₹${tot.toFixed(2)}*`,
   ].join("\n");
 }

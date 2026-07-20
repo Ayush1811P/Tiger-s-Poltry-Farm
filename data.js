@@ -44,6 +44,4 @@ export const business = {
     email: "awsmsi0300@gmail.com",
     whatsappNumber: "7007305113", // with country code, no +
     upiId: "9839376102@ptsbi", // IMPORTANT: Replace this with actual UPI ID
-    freeDeliveryThreshold: 500,
-    deliveryFee: 40,
 };

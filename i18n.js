@@ -61,9 +61,6 @@ export const translations = {
     whyFairBody: { en: "Honest retail and wholesale rates. No hidden charges.", hi: "ईमानदार रिटेल और थोक दरें। कोई छिपा हुआ शुल्क नहीं।" },
     whyEasyTitle: { en: "Easy WhatsApp Order", hi: "आसान व्हाट्सएप ऑर्डर" },
     whyEasyBody: { en: "Pick your chicken, see the price, send the order on WhatsApp.", hi: "अपना चिकन चुनें, कीमत देखें, ऑर्डर व्हाट्सएप पर भेजें।" },
-    whyDeliveryTitle: { en: "Pickup or Delivery", hi: "पिकअप या डिलीवरी" },
-    whyDeliveryBody: { en: "Collect from the farm or get it delivered to your door.", hi: "फार्म से लें या घर तक डिलीवरी पाएं।" },
-
     // Products
     productsTitle: { en: "Customize Order", hi: "ऑर्डर कस्टमाइज़ करें" },
     productsSubtitle: { en: "Configure your chicken weight and quantity preferences below.", hi: "नीचे अपनी चिकन वज़न और मात्रा प्राथमिकताएं सेट करें।" },
@@ -88,25 +85,16 @@ export const translations = {
     cartEmpty: { en: "Your order is empty. Add some chicken to get started.", hi: "आपका ऑर्डर खाली है। शुरू करने के लिए चिकन जोड़ें।" },
     cartRemove: { en: "Remove", hi: "हटाएं" },
     cartSubtotal: { en: "Subtotal", hi: "उप-योग" },
-    cartDelivery: { en: "Delivery", hi: "डिलीवरी" },
-    cartFree: { en: "Free", hi: "मुफ़्त" },
     cartTotal: { en: "Total", hi: "कुल" },
     cartCheckout: { en: "Continue", hi: "आगे बढ़ें" },
     cartClear: { en: "Clear all", hi: "सब हटाएं" },
 
     // Checkout
     checkoutTitle: { en: "Complete Your Order", hi: "अपना ऑर्डर पूरा करें" },
-    checkoutDelivery: { en: "Delivery Method", hi: "डिलीवरी तरीका" },
-    checkoutPickup: { en: "Pickup from farm", hi: "फार्म से पिकअप" },
-    checkoutHome: { en: "Home Delivery", hi: "होम डिलीवरी" },
-    checkoutPickupNote: { en: "Collect your order from our farm. No delivery charge.", hi: "अपना ऑर्डर हमारे फार्म से लें। कोई डिलीवरी शुल्क नहीं।" },
-    checkoutHomeNote: { en: "We deliver to your address. Free over a minimum order.", hi: "हम आपके पते पर डिलीवरी करते हैं। न्यूनतम ऑर्डर पर मुफ़्त।" },
     checkoutName: { en: "Your Name", hi: "आपका नाम" },
     checkoutNamePlaceholder: { en: "e.g. Ramesh Kumar", hi: "जैसे रमेश कुमार" },
     checkoutPhone: { en: "Phone Number", hi: "फ़ोन नंबर" },
     checkoutPhonePlaceholder: { en: "10-digit mobile number", hi: "10 अंकों का मोबाइल नंबर" },
-    checkoutAddress: { en: "Delivery Address", hi: "डिलीवरी पता" },
-    checkoutAddressPlaceholder: { en: "House, street, area, city", hi: "मकान, गली, क्षेत्र, शहर" },
     checkoutBack: { en: "Back", hi: "वापस" },
     checkoutSummary: { en: "Order Summary", hi: "ऑर्डर सारांश" },
     checkoutSend: { en: "Send Order on WhatsApp", hi: "ऑर्डर व्हाट्सएप पर भेजें" },
@@ -118,7 +106,6 @@ export const translations = {
     // Validation
     errName: { en: "Please enter your name.", hi: "कृपया अपना नाम लिखें।" },
     errPhone: { en: "Please enter a valid 10-digit phone number.", hi: "कृपया सही 10 अंकों का फ़ोन नंबर लिखें।" },
-    errAddress: { en: "Please enter your delivery address.", hi: "कृपया अपना डिलीवरी पता लिखें।" },
     errEmpty: { en: "Add at least one product to your order.", hi: "अपने ऑर्डर में कम से कम एक उत्पाद जोड़ें।" },
 
     // Payment Method
@@ -158,9 +145,6 @@ export const translations = {
     close: { en: "Close", hi: "बंद करें" },
     menu: { en: "Menu", hi: "मेन्यू" },
     language: { en: "Language", hi: "भाषा" },
-    freeDeliveryBadge: { en: "Free Delivery", hi: "मुफ़्त डिलीवरी" },
-    freeDeliveryNote: { en: "Free delivery on orders over ₹500.", hi: "₹500 से ज़्यादा के ऑर्डर पर मुफ़्त डिलीवरी।" },
-    deliveryFee: { en: "Delivery charge", hi: "डिलीवरी शुल्क" },
     showMap: { en: "Show Map", hi: "नक्शा दिखाएं" },
     mapLocation: { en: "Tiger Lairo Farm Location", hi: "टाइगर लैरो फार्म का स्थान" },
 };
